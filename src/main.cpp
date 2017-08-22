@@ -74,17 +74,17 @@ vector<double> JMT(vector<double> start, vector<double> end, double T) {
 
   MatrixXd B(3, 3);
   B << pow(T, 3), pow(T, 4), pow(T, 5),
-      pow(3 * T, 2), pow(4 * T, 3), pow(5 * T, 4),
-      6 * T, pow(12 * T, 2), pow(20 * T, 3);
+      3* pow(T, 2), 4 * pow(T, 3), 5 * pow(T, 4),
+      6 * T, 12 * pow(T, 2), 20 * pow(T, 3);
 
-  MatrixXd s(3, 1);
+  VectorXd s(3);
   s << Sf-C1,
       Sf_dot-C2,
       Sf_dot_dot-C3;
 
-  MatrixXd a = B.inverse() * s;
+  VectorXd a = B.inverse() * s;
 
-  vector<double> answer = {a0,a1,a2,a(0,0),a(1, 0),a(2,0)};
+  vector<double> answer = {a0,a1,a2,a[0],a[1],a[2]};
   VectorXd v(6);
   v << a0, a1, a2, answer[3], answer[4], answer[5];
 
