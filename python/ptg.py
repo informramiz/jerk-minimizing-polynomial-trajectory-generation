@@ -50,20 +50,37 @@ def PTG(start_s, start_d, target_vehicle, delta, T, predictions):
     target = predictions[target_vehicle]
     # generate alternative goals
     all_goals = []
+    #although we have received a traget duration T but
+    #to incorporate noise in target_state we will predict trajectories
+    #for multiple timesteps and pick the best trajectory out of them
     timestep = 0.5
     t = T - 4 * timestep
     while t <= T + 4 * timestep:
+        #predict the sate of target vehicle at timstep t
+        #and add offset delta to target vehicle state
+        #which is the sate we want to achieve for ego vehicle
         target_state = np.array(target.state_in(t)) + np.array(delta)
+        #extract s-related values [s, s_dot, s_dot]
         goal_s = target_state[:3]
+        #similarly for d
         goal_d = target_state[3:]
+        #make an array of goals and add predicted goal to it
         goals = [(goal_s, goal_d, t)]
+        #as there can be noise in target state received so
+        #we will generate multiple trajectories for current timestep
+        #by adding guassian noise to predicted goal for timestep t
+        #and will pick the trajectory with minimum cost
         for _ in range(N_SAMPLES):
+            #add gaussian noise
             perturbed = perturb_goal(goal_s, goal_d)
+            #append this goal state to list of goals
             goals.append((perturbed[0], perturbed[1], t))
+
         all_goals += goals
         t += timestep
 
-    # find best trajectory
+    # generate trajectory for each goal state
+    # using Jerk Minimizing polynomial trajectory generation (JMT)
     trajectories = []
     for goal in all_goals:
         s_goal, d_goal, t = goal
@@ -71,8 +88,11 @@ def PTG(start_s, start_d, target_vehicle, delta, T, predictions):
         d_coefficients = JMT(start_d, d_goal, t)
         trajectories.append(tuple([s_coefficients, d_coefficients, t]))
 
+    #calculate cost for each trajectory and pick the one with best cost
     best = min(trajectories, key=lambda tr: calculate_cost(tr, target_vehicle, delta, T, predictions, WEIGHTED_COST_FUNCTIONS))
+    #this one is just for logging purposes
     calculate_cost(best, target_vehicle, delta, T, predictions, WEIGHTED_COST_FUNCTIONS, verbose=True)
+
     return best
 
 
@@ -87,7 +107,7 @@ def calculate_cost(trajectory, target_vehicle, delta, goal_t, predictions, cost_
 
 def perturb_goal(goal_s, goal_d):
     """
-    Returns a "perturbed" version of the goal.
+    Returns a "perturbed/noised" version of the goal.
     """
     new_s_goal = []
     for mu, sig in zip(goal_s, SIGMA_S):
