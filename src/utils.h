@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include "Eigen/Dense"
+#include "trajectory.h"
 
 using namespace std;
 using Eigen::VectorXd;
@@ -89,13 +90,13 @@ public:
   /**
    * Returns the result of a polynomial function
    */
-  static double solve_polynomial(VectorXd coeffs, double x);
+  static double solve_polynomial(const VectorXd &coeffs, double x);
 
   /**
    * Calculates the derivative of a polynomial with given coefficients and returns
    * the corresponding coefficients of differentiated function.
    */
-  static VectorXd differentiate(VectorXd coeffs);
+  static VectorXd differentiate(const VectorXd &coeffs);
 };
 
 #endif /* UTILS_H_ */

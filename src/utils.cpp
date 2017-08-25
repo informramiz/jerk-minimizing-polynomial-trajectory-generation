@@ -48,7 +48,7 @@ double Utils::logistic(double x) {
   return (2.0 / (1 + exp(-x))) - 1.0;
 }
 
-double Utils::solve_polynomial(VectorXd coeffs, double x) {
+double Utils::solve_polynomial(const VectorXd &coeffs, double x) {
   double total = 0.0;
   for (int i = 0; i < coeffs.rows(); ++i) {
     total += coeffs[i] * pow(x, i);
@@ -57,7 +57,7 @@ double Utils::solve_polynomial(VectorXd coeffs, double x) {
   return total;
 }
 
-VectorXd Utils::differentiate(VectorXd coeffs) {
+VectorXd Utils::differentiate(const VectorXd &coeffs) {
   vector<double> new_coeffs;
   //ignore the first coefficient as it will always be 0 after
   //differentiation. Multiply power/degree of each term with with its coefficient
