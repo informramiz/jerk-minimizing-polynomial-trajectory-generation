@@ -25,6 +25,12 @@ struct Trajectory {
 
   ///d-coordinate polynomial trajectory coefficients
   VectorXd d_coeffs;
+
+  Trajectory(VectorXd &s_coeffs, VectorXd &d_coeffs, double t) {
+    this->s_coeffs = s_coeffs;
+    this->d_coeffs = d_coeffs;
+    this->t = t;
+  }
 };
 
 
