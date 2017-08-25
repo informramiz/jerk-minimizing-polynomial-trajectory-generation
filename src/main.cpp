@@ -121,8 +121,7 @@ struct test_case {
 vector<vector<double> > answers = { { 0.0, 10.0, 0.0, 0.0, 0.0, 0.0 }, { 0.0,
     10.0, 0.0, 0.0, -0.625, 0.3125 }, { 5.0, 10.0, 1.0, -3.0, 0.64, -0.0432 } };
 
-int main() {
-
+void testJMT() {
   //create test cases
 
   vector<test_case> tc;
@@ -157,6 +156,9 @@ int main() {
   } else {
     cout << "Nice work!" << endl;
   }
+}
 
+int main() {
+  testJMT();
   return 0;
 }
