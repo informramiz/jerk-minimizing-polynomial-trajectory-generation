@@ -108,6 +108,21 @@ double Utils::nearest_approach_to_vehicle(const Trajectory &trajectory, const Ve
   return closest;
 }
 
+double Utils::nearest_approach_to_any_vehicle(const Trajectory &trajectory, const vector<Vehicle> &vehicles) {
+  double closest_to_any_vehicle = 999999;
+
+  for (int i = 0; i < vehicles.size(); ++i) {
+    //calculate closest approach of trajectory to current vehicle
+    double closest_to_current_vehicle = nearest_approach_to_vehicle(trajectory, vehicles[i]);
+
+    if (closest_to_current_vehicle < closest_to_any_vehicle) {
+      closest_to_any_vehicle = closest_to_current_vehicle;
+    }
+  }
+
+  return closest_to_any_vehicle;
+}
+
 
 
 
