@@ -164,8 +164,15 @@ void testJMT() {
 }
 
 void test_cases() {
-  VectorXd v(6);
-  v << 0, 10, 0, 0, 0, 0;
+  VectorXd state1(6);
+  state1 << 0, 10, 0, 0, 0, 0;
+
+  VectorXd state2(6);
+  state2 << -1, 10, 0, 1, 0, 0;
+
+  Vehicle vehicle1(state1);
+  Vehicle vehicle2(state2);
+  vector<Vehicle> vehicles = {vehicle1, vehicle2};
 
   VectorXd coeffs(6);
   coeffs << 0, 10, 0, 2, 0, 5;
@@ -173,9 +180,10 @@ void test_cases() {
   VectorXd s_coeffs = coeffs.head(3);
   VectorXd d_coeffs = coeffs.tail(3);
 
+  Trajectory trajectory(s_coeffs, d_coeffs, 5);
+
   //vehicle state update
-  Vehicle vehicle(v);
-  VectorXd new_state = vehicle.state_at(5);
+  VectorXd new_state = vehicle1.state_at(5);
   cout << "Predicted state of vehicle: " << new_state.transpose() << endl;
   VectorXd vehicle_new_state_answer(6);
   vehicle_new_state_answer << 50, 10, 0, 0, 0, 0;
@@ -199,11 +207,14 @@ void test_cases() {
   assert(diff_coeffs == diff_answer);
 
   //closest approach to a vehicle test
-
-  Trajectory trajectory(s_coeffs, d_coeffs, 5);
-  double closest_approach = Utils::nearest_approach_to_vehicle(trajectory, vehicle);
+  double closest_approach = Utils::nearest_approach_to_vehicle(trajectory, vehicle1);
   cout << "closest approach to a vehicle: " << closest_approach << endl;
   assert(closest_approach == 2.0);
+
+  //closet approach to any vehicle
+  double closest_approach_to_any_vehicle = Utils::nearest_approach_to_any_vehicle(trajectory, vehicles);
+  cout << "closest approach to any vehicle: " << closest_approach_to_any_vehicle << endl;
+  assert(closest_approach_to_any_vehicle == 1);
 }
 
 int main() {
