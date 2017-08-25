@@ -23,7 +23,7 @@ class Vehicle(object):
             #using equation of motion for s-coordinate
             #S_t+1 = S_t + Vt * t + (a * t^2)/2
             s[0] + (s[1] * t) + s[2] * t**2 / 2.0,
-            #as v = a * t
+            #as v = v + a * t
             s[1] + s[2] * t,
             #acceleration is constant so it remains
             s[2],
