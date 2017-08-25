@@ -1,6 +1,8 @@
 /*
  * vehicle.h
  *
+ * Helper class. Non-ego vehicles move w/ constant acceleration
+ *
  *  Created on: Aug 25, 2017
  *      Author: ramiz
  */
@@ -28,6 +30,11 @@ public:
 private:
   VectorXd start_state_;
 
+  /**
+   * predict new state (d, v, a) at timestep t
+   * using equations of motion
+   * given old state (d, v, a)
+   */
   Eigen::VectorXd predict_coordinate_state(const Eigen::VectorXd& s, double t);
 };
 

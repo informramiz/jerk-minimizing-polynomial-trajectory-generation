@@ -14,8 +14,10 @@ Vehicle::Vehicle(VectorXd start_state) {
 Vehicle::~Vehicle() {
 
 }
-/**predict state of vehicle at timestep t
+/**
+ * predict new state (d, v, a) at timestep t
  * using equations of motion
+ * given old state (d, v, a)
  */
 VectorXd Vehicle::predict_coordinate_state(const VectorXd& values, double t) {
   //predict distance travelled based on velocity and acceleration
@@ -35,6 +37,10 @@ VectorXd Vehicle::predict_coordinate_state(const VectorXd& values, double t) {
   return new_state;
 }
 
+/**
+ * predict state of vehicle at timestep t
+ * using equations of motion
+ */
 VectorXd Vehicle::state_at(double t) {
     //extract s-values
     VectorXd s = start_state_.head(3);
