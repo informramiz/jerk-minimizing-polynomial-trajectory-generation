@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <vector>
+#include "Eigen/Dense"
 using namespace std;
 
 class Utils {
@@ -65,6 +66,11 @@ public:
    * Converts angle from degree to radians
    */
   static double deg2rad(double delta_i);
+
+  static Eigen::VectorXd vectorToVectorXd(vector<double> &v) {
+    Eigen::Map<Eigen::VectorXd> new_vector(v.data(), v.size());
+    return new_vector;
+  }
 };
 
 #endif /* UTILS_H_ */

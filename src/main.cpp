@@ -12,6 +12,7 @@
 #include <cmath>
 #include <vector>
 #include "Eigen/Dense"
+#include "utils.h"
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -159,6 +160,8 @@ void testJMT() {
 }
 
 int main() {
-  testJMT();
+  vector<double> v = {1, 2, 3};
+  VectorXd e_v = Utils::vectorToVectorXd(v);
+  cout << e_v << endl;
   return 0;
 }
