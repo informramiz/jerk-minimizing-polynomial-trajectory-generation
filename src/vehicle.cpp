@@ -19,7 +19,7 @@ Vehicle::~Vehicle() {
  * using equations of motion
  * given old state (d, v, a)
  */
-VectorXd Vehicle::predict_coordinate_state(const VectorXd& values, double t) {
+VectorXd Vehicle::predict_coordinate_state(const VectorXd& values, double t) const {
   //predict distance travelled based on velocity and acceleration
   //S_t+1 = S_t + Vt * t + (a * t^2)/2
   double d = values[0] + (values[1] * t) + ((1.0 / 2.0) * values[2] * t*t);
@@ -41,7 +41,7 @@ VectorXd Vehicle::predict_coordinate_state(const VectorXd& values, double t) {
  * predict state of vehicle at timestep t
  * using equations of motion
  */
-VectorXd Vehicle::state_at(double t) {
+VectorXd Vehicle::state_at(double t) const {
     //extract s-values
     VectorXd s = start_state_.head(3);
     //extract d-values

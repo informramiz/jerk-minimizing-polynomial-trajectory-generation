@@ -25,7 +25,7 @@ public:
   /**
    * Predict and returns the state of the vehicle at given timestep
    */
-  VectorXd state_at(double t);
+  VectorXd state_at(double t) const;
 
 private:
   VectorXd start_state_;
@@ -35,7 +35,7 @@ private:
    * using equations of motion
    * given old state (d, v, a)
    */
-  Eigen::VectorXd predict_coordinate_state(const Eigen::VectorXd& s, double t);
+  Eigen::VectorXd predict_coordinate_state(const Eigen::VectorXd& s, double t) const;
 };
 
 #endif /* VEHICLE_H_ */
