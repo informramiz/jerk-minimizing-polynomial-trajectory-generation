@@ -12,6 +12,7 @@
 #include <cmath>
 #include <vector>
 #include "Eigen/Dense"
+#include "vehicle.h"
 #include "utils.h"
 
 using namespace std;
@@ -160,11 +161,13 @@ void testJMT() {
 }
 
 int main() {
-  vector<double> v = {1, 2, 3};
-  VectorXd e_v = Utils::vectorToVectorXd(v);
-  cout << e_v << endl;
+  VectorXd v(6);
+  v << 0, 10, 0, 0, 0, 0;
 
-  vector<double> v1 = Utils::VectorXdToVector(e_v);
-  Utils::print_vector(v1);
+  Vehicle vehicle(v);
+  VectorXd new_state = vehicle.state_at(5);
+
+  cout << new_state.transpose();
+
   return 0;
 }
