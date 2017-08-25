@@ -88,26 +88,26 @@ def max_accel_cost(traj, target_vehicle, delta, T, predictions):
     s_dot = differentiate(s)
     s_d_dot = differentiate(s_dot)
     a = to_equation(s_d_dot)
-    total_acc = 0
-    dt = float(T) / 100.0
-    for i in range(100):
-        t = dt * i
-        acc = a(t)
-        total_acc += abs(acc*dt)
-        
-    acc_per_second = total_acc / T
-
-    return logistic(acc_per_second / EXPECTED_ACC_IN_ONE_SEC )
+    all_accs = [a(float(T)/100 * i) for i in range(100)]
+    max_acc = max(all_accs, key=abs)
+    if abs(max_acc) > MAX_ACCEL: return 1
+    else: return 0
 
 def total_accel_cost(traj, target_vehicle, delta, T, predictions):
     s, d, t = traj
     s_dot = differentiate(s)
     s_d_dot = differentiate(s_dot)
     a = to_equation(s_d_dot)
-    all_accs = [a(float(T)/100 * i) for i in range(100)]
-    max_acc = max(all_accs, key=abs)
-    if abs(max_acc) > MAX_ACCEL: return 1
-    else: return 0
+    total_acc = 0
+    dt = float(T) / 100.0
+    for i in range(100):
+        t = dt * i
+        acc = a(t)
+        total_acc += abs(acc*dt)
+
+    acc_per_second = total_acc / T
+
+    return logistic(acc_per_second / EXPECTED_ACC_IN_ONE_SEC )
 
 
 def max_jerk_cost(traj, target_vehicle, delta, T, predictions):
