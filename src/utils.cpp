@@ -69,6 +69,45 @@ VectorXd Utils::differentiate(const VectorXd &coeffs) {
   return Utils::vectorToVectorXd(new_coeffs);
 }
 
+double Utils::nearest_approach_to_vehicle(const Trajectory &trajectory, const Vehicle &vehicle) {
+
+  //assign a very high value initially
+  double closest = 999999;
+
+  //we will divide total time in 100 steps and check for each timestep in trajectory.t duration to find
+  //out value of (s, d) for trajectory and for given vehicle at that time step
+  for (int i = 0; i < 100; ++i) {
+    //consider i% of total timestep for eachc iteration
+    double t = trajectory.t/100 * i;
+
+    //get s-coordinate value at time t
+    //by solving trajectory.s_coeffs polynomial function
+    //at time t
+    double trajectory_s = Utils::solve_polynomial(trajectory.s_coeffs, t);
+
+    //get d-coordinate value at time t
+    //by solving trajectory.s_coeffs polynomial function
+    //at time t
+    double trajectory_d = Utils::solve_polynomial(trajectory.d_coeffs, t);
+
+    //now predict the state of target vehicle at time t
+    VectorXd target_vehicle_state = vehicle.state_at(t);
+    //extract (s, d)
+    double target_vehicle_s = target_vehicle_state[0];
+    double target_vehicle_d = target_vehicle_state[3];
+
+    //calculate the euclidean distance between trajectory's (s, d)
+    //and target vehicle's (s, d) at time t
+    double distance = euclidean(trajectory_s, trajectory_d, target_vehicle_s, target_vehicle_d);
+
+    if (distance < closest) {
+      closest = distance;
+    }
+  }
+
+  return closest;
+}
+
 
 
 

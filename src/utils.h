@@ -12,6 +12,7 @@
 #include <vector>
 #include "Eigen/Dense"
 #include "trajectory.h"
+#include "vehicle.h"
 
 using namespace std;
 using Eigen::VectorXd;
@@ -97,6 +98,12 @@ public:
    * the corresponding coefficients of differentiated function.
    */
   static VectorXd differentiate(const VectorXd &coeffs);
+
+  /**
+   * Calculates nearest approach of given `vehicle` and given trajectory `traj`
+   *
+   */
+  static double nearest_approach_to_vehicle(const Trajectory &trajectory, const Vehicle &vehicle);
 };
 
 #endif /* UTILS_H_ */
