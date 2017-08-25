@@ -59,7 +59,7 @@ public:
   /**
    * Calculates Euclidean distance
    */
-  static double euclidean(int x1, int y1, int x2, int y2);
+  static double euclidean(double x1, double y1, double x2, double y2);
 
   /**
    * Calculates Euclidean distance in 3D

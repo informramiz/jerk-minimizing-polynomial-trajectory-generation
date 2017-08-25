@@ -17,16 +17,16 @@ Utils::~Utils() {
   // TODO Auto-generated destructor stub
 }
 
-double Utils::euclidean(int x1, int y1, int x2, int y2) {
+double Utils::euclidean(double x1, double y1, double x2, double y2) {
   //  int dist_x = abs(x1 - x2);
   //  int dist_y =  abs(y1 - y2);
   //  int dist = dist_x + dist_y;
   //
   //  return dist;
 
-  int dist_x = (x1 - x2);
-  int dist_y =  (y1 - y2);
-  int squared_dist = pow(dist_x, 2) + pow(dist_y, 2);
+  double dist_x = (x1 - x2);
+  double dist_y =  (y1 - y2);
+  double squared_dist = pow(dist_x, 2) + pow(dist_y, 2);
 
   return sqrt(squared_dist);
 }
