@@ -215,6 +215,8 @@ void test_cases() {
   double closest_approach_to_any_vehicle = Utils::nearest_approach_to_any_vehicle(trajectory, vehicles);
   cout << "closest approach to any vehicle: " << closest_approach_to_any_vehicle << endl;
   assert((closest_approach_to_any_vehicle - 1.41421) < 0.00001);
+
+  Utils::plot_trajectory(trajectory, vehicle2, true);
 }
 
 int main() {

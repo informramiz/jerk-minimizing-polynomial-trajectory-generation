@@ -6,7 +6,10 @@
  */
 
 #include <math.h>
+#include "matplotlibcpp.h"
 #include "utils.h"
+
+namespace plt = matplotlibcpp;
 
 Utils::Utils() {
   // TODO Auto-generated constructor stub
@@ -115,6 +118,52 @@ double Utils::nearest_approach_to_any_vehicle(const Trajectory &trajectory, cons
   }
 
   return closest_to_any_vehicle;
+}
+
+void Utils::plot_trajectory(const Trajectory &trajectory, const Vehicle &vehicle, bool plot_vehicle) {
+  //vectors to hold (s, d) values for given trajectory
+  vector<double> trajectory_s_values;
+  vector<double> trajectory_d_values;
+
+  //vectors to hold (s, d) values for given vehicle
+  vector<double> vehicle_s_values;
+  vector<double> vehicle_d_values;
+
+  //for each timestep of 0.25 till total time/duration of trajectory.t
+  double t = 0;
+  while (t <= trajectory.t + 0.01) {
+    //use trajectory s_coefficients to solve polynomial function of time at time t
+    //to get the value of s-coordinate at timestep t
+    double trajectory_s = solve_polynomial(trajectory.s_coeffs, t);
+    //similary for d-coordinate
+    double trajectory_d = solve_polynomial(trajectory.d_coeffs, t);
+
+    //append these values to list of (s, d) values
+    trajectory_s_values.push_back(trajectory_s);
+    trajectory_d_values.push_back(trajectory_d);
+
+    //if need to plot target vehicle as vehicle then
+    //calculate (s, d) values for its trajectory as well
+    if (plot_vehicle) {
+      //predict vehicle state at time step t
+       VectorXd vehicle_predicted_state = vehicle.state_at(t);
+
+       //add predicted (s, d) to list
+       vehicle_s_values.push_back(vehicle_predicted_state[0]);
+       vehicle_d_values.push_back(vehicle_predicted_state[3]);
+    }
+
+    //increment time
+    t += 0.25;
+  }
+
+  plt::named_plot("Self-Driving-Car", trajectory_s_values, trajectory_d_values, "b--");
+  if (plot_vehicle) {
+    plt::named_plot("Target Vehicle", vehicle_s_values, vehicle_d_values, "r--");
+  }
+
+  plt::legend();
+  plt::show();
 }
 
 

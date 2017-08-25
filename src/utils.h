@@ -109,6 +109,8 @@ public:
    * Calculates nearest approach to any of the given vehicles and given trajectory
    */
   static double nearest_approach_to_any_vehicle(const Trajectory &trajectory, const vector<Vehicle> &vehicles);
+
+  static void plot_trajectory(const Trajectory &trajectory, const Vehicle &vehicle, bool plot_vehicle=false);
 };
 
 #endif /* UTILS_H_ */
