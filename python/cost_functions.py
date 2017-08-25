@@ -70,7 +70,28 @@ def stays_on_road_cost(traj, target_vehicle, delta, T, predictions):
     pass
 
 def exceeds_speed_limit_cost(traj, target_vehicle, delta, T, predictions):
-    pass
+    s, _, _ = traj
+    #calculate coefficients for speed
+    s_dot = differentiate(s)
+    #make a polynomial function of time for speed
+    s_dot_equation = to_equation(s_dot)
+
+    all_speeds = []
+    for i in range(100):
+        #take i% of total time T
+        t = float(T)/100 * i;
+        #calculate speed at given timestep
+        v = s_dot_equation(t)
+
+        #add this speed to list of all speeds
+        all_speeds.append(v)
+
+    max_v = max(all_speeds, key=abs)
+    #check if it exceeds SPEED_LIMIT
+    if (abs(max_v) > SPEED_LIMIT):
+        return 1;
+
+    return 0;
 
 def efficiency_cost(traj, target_vehicle, delta, T, predictions):
     """

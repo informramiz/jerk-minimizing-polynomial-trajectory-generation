@@ -13,6 +13,7 @@ WEIGHTED_COST_FUNCTIONS = [
     (total_jerk_cost,   1),
     (collision_cost,    1),
     (buffer_cost,       1),
+    (exceeds_speed_limit_cost, 1),
     (max_accel_cost,    1),
     (total_accel_cost,  1),
 ]
