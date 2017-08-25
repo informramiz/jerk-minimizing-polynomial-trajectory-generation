@@ -11,7 +11,9 @@
 #include <iostream>
 #include <vector>
 #include "Eigen/Dense"
+
 using namespace std;
+using Eigen::VectorXd;
 
 class Utils {
 public:
@@ -70,6 +72,10 @@ public:
   static Eigen::VectorXd vectorToVectorXd(vector<double> &v) {
     Eigen::Map<Eigen::VectorXd> new_vector(v.data(), v.size());
     return new_vector;
+  }
+
+  static vector<double> VectorXdToVector(VectorXd &v) {
+    return vector<double>(v.data(), v.data() + v.rows() * v.cols());
   }
 };
 

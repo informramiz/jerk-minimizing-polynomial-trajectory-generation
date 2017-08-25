@@ -163,5 +163,8 @@ int main() {
   vector<double> v = {1, 2, 3};
   VectorXd e_v = Utils::vectorToVectorXd(v);
   cout << e_v << endl;
+
+  vector<double> v1 = Utils::VectorXdToVector(e_v);
+  Utils::print_vector(v1);
   return 0;
 }
