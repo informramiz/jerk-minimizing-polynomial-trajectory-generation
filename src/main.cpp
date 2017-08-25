@@ -161,13 +161,15 @@ void testJMT() {
 }
 
 int main() {
-  VectorXd v(6);
-  v << 0, 10, 0, 0, 0, 0;
+//  VectorXd v(6);
+//  v << 0, 10, 0, 0, 0, 0;
+//
+//  Vehicle vehicle(v);
+//  VectorXd new_state = vehicle.state_at(5);
+//
+//  cout << new_state.transpose();
 
-  Vehicle vehicle(v);
-  VectorXd new_state = vehicle.state_at(5);
-
-  cout << new_state.transpose();
-
+  double value = Utils::logistic(5);
+  cout << value;
   return 0;
 }

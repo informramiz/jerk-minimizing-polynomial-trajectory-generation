@@ -77,6 +77,14 @@ public:
   static vector<double> VectorXdToVector(VectorXd &v) {
     return vector<double>(v.data(), v.data() + v.rows() * v.cols());
   }
+
+  /**
+   * A function that returns a value between 0 and 1 for x in the
+   * range [0, infinity] and -1 to 1 for x in the range [-infinity, infinity].
+   *
+   * Useful for cost functions.
+   */
+  static double logistic(double x);
 };
 
 #endif /* UTILS_H_ */
