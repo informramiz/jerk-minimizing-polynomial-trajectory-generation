@@ -11,9 +11,12 @@
 #include <fstream>
 #include <cmath>
 #include <vector>
+#include <cassert>
+#include <iomanip>
 #include "Eigen/Dense"
 #include "vehicle.h"
 #include "utils.h"
+#include "trajectory.h"
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -160,25 +163,50 @@ void testJMT() {
   }
 }
 
+void test_cases() {
+  VectorXd v(6);
+  v << 0, 10, 0, 0, 0, 0;
+
+  VectorXd coeffs(6);
+  coeffs << 0, 10, 0, 2, 0, 5;
+
+  VectorXd s_coeffs = coeffs.head(3);
+  VectorXd d_coeffs = coeffs.tail(3);
+
+  //vehicle state update
+  Vehicle vehicle(v);
+  VectorXd new_state = vehicle.state_at(5);
+  cout << "Predicted state of vehicle: " << new_state.transpose() << endl;
+  VectorXd vehicle_new_state_answer(6);
+  vehicle_new_state_answer << 50, 10, 0, 0, 0, 0;
+  assert(vehicle_new_state_answer == new_state);
+
+  //logistic function test
+  double logistic_value = Utils::logistic(9);
+  cout << "logistic: " << logistic_value << endl;
+  assert((logistic_value - 0.999) < 0.001);
+
+  //solve polynomial test
+  double solved_poly = Utils::solve_polynomial(coeffs, 2);
+  cout << "Solved polynomial: " << solved_poly << endl;
+  assert(solved_poly == 196);
+
+  //differentiation test
+  VectorXd diff_coeffs = Utils::differentiate(coeffs);
+  cout << "Differentiation: " << diff_coeffs.transpose() << endl;
+  VectorXd diff_answer(5);
+  diff_answer << 10, 0, 6, 0, 25;
+  assert(diff_coeffs == diff_answer);
+
+  //closest approach to a vehicle test
+
+  Trajectory trajectory(s_coeffs, d_coeffs, 5);
+  double closest_approach = Utils::nearest_approach_to_vehicle(trajectory, vehicle);
+  cout << "closest approach to a vehicle: " << closest_approach << endl;
+  assert(closest_approach == 2.0);
+}
+
 int main() {
-//  VectorXd v(6);
-//  v << 0, 10, 0, 0, 0, 0;
-//
-//  Vehicle vehicle(v);
-//  VectorXd new_state = vehicle.state_at(5);
-//
-//  cout << new_state.transpose();
-
-
-//  double value = Utils::logistic(100);
-//  cout << value;
-
-    VectorXd coeffs(6);
-    coeffs << 0, 10, 0, 2, 0, 5;
-//    cout << Utils::solve_polynomial(coeffs, 2) << endl;
-
-    VectorXd diff_coeffs = Utils::differentiate(coeffs);
-    cout << diff_coeffs.transpose() << endl;
-
+  test_cases();
   return 0;
 }
