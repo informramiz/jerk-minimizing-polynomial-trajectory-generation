@@ -48,6 +48,15 @@ double Utils::logistic(double x) {
   return (2.0 / (1 + exp(-x))) - 1.0;
 }
 
+double Utils::solve_polynomial(VectorXd coeffs, double x) {
+  double total = 0.0;
+  for (int i = 0; i < coeffs.rows(); ++i) {
+    total += coeffs[i] * pow(x, i);
+  }
+
+  return total;
+}
+
 
 
 

@@ -85,6 +85,11 @@ public:
    * Useful for cost functions.
    */
   static double logistic(double x);
+
+  /**
+   * Returns the result of a polynomial function
+   */
+  static double solve_polynomial(VectorXd coeffs, double x);
 };
 
 #endif /* UTILS_H_ */

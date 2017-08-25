@@ -169,7 +169,13 @@ int main() {
 //
 //  cout << new_state.transpose();
 
-  double value = Utils::logistic(5);
-  cout << value;
+
+//  double value = Utils::logistic(100);
+//  cout << value;
+
+    VectorXd coeffs(6);
+    coeffs << 0, 10, 0, 2, 0, 5;
+    cout << Utils::solve_polynomial(coeffs, 2);
+
   return 0;
 }
