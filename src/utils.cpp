@@ -57,6 +57,18 @@ double Utils::solve_polynomial(VectorXd coeffs, double x) {
   return total;
 }
 
+VectorXd Utils::differentiate(VectorXd coeffs) {
+  vector<double> new_coeffs;
+  //ignore the first coefficient as it will always be 0 after
+  //differentiation. Multiply power/degree of each term with with its coefficient
+  for (int i = 1; i < coeffs.rows(); ++i) {
+    double new_coeff = i * coeffs[i];
+    new_coeffs.push_back(new_coeff);
+  }
+
+  return Utils::vectorToVectorXd(new_coeffs);
+}
+
 
 
 

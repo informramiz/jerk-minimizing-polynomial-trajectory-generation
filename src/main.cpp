@@ -175,7 +175,10 @@ int main() {
 
     VectorXd coeffs(6);
     coeffs << 0, 10, 0, 2, 0, 5;
-    cout << Utils::solve_polynomial(coeffs, 2);
+//    cout << Utils::solve_polynomial(coeffs, 2) << endl;
+
+    VectorXd diff_coeffs = Utils::differentiate(coeffs);
+    cout << diff_coeffs.transpose() << endl;
 
   return 0;
 }
