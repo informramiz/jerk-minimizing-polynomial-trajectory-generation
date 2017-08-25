@@ -214,7 +214,7 @@ void test_cases() {
   //closet approach to any vehicle
   double closest_approach_to_any_vehicle = Utils::nearest_approach_to_any_vehicle(trajectory, vehicles);
   cout << "closest approach to any vehicle: " << closest_approach_to_any_vehicle << endl;
-  assert(closest_approach_to_any_vehicle == 1);
+  assert((closest_approach_to_any_vehicle - 1.41421) < 0.00001);
 }
 
 int main() {
