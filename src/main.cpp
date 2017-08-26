@@ -261,6 +261,13 @@ void test_cases() {
 
   double efficiency_cost = cost_functions.efficiency_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "Efficiency cost: " << efficiency_cost << endl;
+  assert (efficiency_cost == 0.0);
+
+  double max_accel_cost = cost_functions.max_acceleration_cost(trajectory, target_vehicle_id, delta, T, vehicles);
+  cout << "Max accel cost: " << max_accel_cost << endl;
+  assert (max_accel_cost == 0.0);
+
+
 }
 
 int main() {
