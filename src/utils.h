@@ -57,6 +57,14 @@ public:
   }
 
   /**
+   * Merge two vectors
+   */
+  template<class T>
+  static void merge_vectors(vector<T> &target, vector<T> &source) {
+    target.insert(target.end(), source.begin(), source.end());
+  }
+
+  /**
    * Calculates Euclidean distance
    */
   static double euclidean(double x1, double y1, double x2, double y2);

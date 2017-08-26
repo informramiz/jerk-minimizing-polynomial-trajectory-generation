@@ -228,7 +228,11 @@ void test_cases() {
 }
 
 int main() {
-  test_cases();
+//  test_cases();
 //  testJMT();
+  vector<int> v1 = {1, 2};
+  vector<int> v2 = {3, 2};
+  Utils::merge_vectors(v2, v1);
+  Utils::print_vector(v2);
   return 0;
 }
