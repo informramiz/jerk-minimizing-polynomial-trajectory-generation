@@ -153,6 +153,42 @@ public:
                          double T,
                          const vector<Vehicle> &predictions);
 
+  ///define an alias type name for function pointer
+  typedef double (CostFunctions::* cost_function_ptr) (const Trajectory &trajectory,
+                                                      int target_vehicle_id,
+                                                      const VectorXd &delta,
+                                                      double T,
+                                                      const vector<Vehicle> &predictions);
+
+  const vector<cost_function_ptr> cost_functions_pointers = {
+      &CostFunctions::time_diff_cost,
+      &CostFunctions::s_diff_cost,
+      &CostFunctions::d_diff_cost,
+      &CostFunctions::collision_cost,
+      &CostFunctions::efficiency_cost,
+      &CostFunctions::exceeds_speed_limit_cost,
+      &CostFunctions::stays_on_road_cost,
+      &CostFunctions::buffer_cost,
+      &CostFunctions::max_acceleration_cost,
+      &CostFunctions::max_jerk_cost,
+      &CostFunctions::total_acceleration_cost,
+      &CostFunctions::total_jerk_cost,
+  };
+
+  const vector<double> cost_functions_weights = {
+      5, //time_diff_cost
+      15, //s_diff_cost
+      15, //d_diff_cost
+      20, //collision_cost
+      1,  //efficiency_cost
+      10, //exceeds_speed_limit_cost
+      1,  //stays_on_road_cost
+      15, //buffer_cost
+      1, //max_acceleration_cost
+      5, //max_jerk_cost
+      1, //total_acceleration_cost
+      5, //total_jerk_cost
+  };
 };
 
 #endif /* COST_FUNCTIONS_H_ */
