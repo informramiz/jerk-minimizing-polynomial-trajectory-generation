@@ -259,6 +259,8 @@ void test_cases() {
   cout << "exceeds speed limit cost: " << exceeds_speed_limit_cost << endl;
   assert(exceeds_speed_limit_cost == 0);
 
+  double efficiency_cost = cost_functions.efficiency_cost(trajectory, target_vehicle_id, delta, T, vehicles);
+  cout << "Efficiency cost: " << efficiency_cost << endl;
 }
 
 int main() {
