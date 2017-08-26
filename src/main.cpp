@@ -250,6 +250,10 @@ void test_cases() {
   double collision_cost = cost_functions.collision_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "collision cost: " << collision_cost << endl;
   assert(collision_cost == 1);
+
+  double buffer_cost = cost_functions.buffer_cost(trajectory, target_vehicle_id, delta, T, vehicles);
+  cout << "buffer cost: " << buffer_cost << endl;
+  assert((buffer_cost - 0.7859) < 0.0001);
 }
 
 int main() {
