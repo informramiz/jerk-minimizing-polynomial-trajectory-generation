@@ -270,6 +270,10 @@ void test_cases() {
   double max_jerk_cost = cost_functions.max_jerk_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "Max jerk cost: " << max_jerk_cost << endl;
   assert (max_jerk_cost == 0.0);
+
+  double total_accel_cost = cost_functions.total_acceleration_cost(trajectory, target_vehicle_id, delta, T, vehicles);
+  cout << "Total accel cost: " << total_accel_cost << endl;
+
 }
 
 int main() {
