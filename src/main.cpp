@@ -239,8 +239,15 @@ void test_cases() {
   cout << "Time diff cost: " << time_diff_cost << endl;
   assert( (time_diff_cost - 0.218) < 0.001);
 
-  double d_diff_cost = cost_functions.d_diff_cost(trajectory, target_vehicle_id, delta, 9, vehicles);
+  double d_diff_cost = cost_functions.d_diff_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "d diff cost: " << d_diff_cost << endl;
+  assert( (d_diff_cost - 2.999) < 0.001);
+
+  double s_diff_cost = cost_functions.s_diff_cost(trajectory, target_vehicle_id, delta, T, vehicles);
+  cout << "s diff cost: " << s_diff_cost << endl;
+  assert( (s_diff_cost - 0.462) < 0.001);
+
+
 }
 
 int main() {
