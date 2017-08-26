@@ -147,3 +147,35 @@ double CostFunctions::buffer_cost(const Trajectory &trajectory,
 
   return Utils::logistic(2*Constants::VEHICLE_RADIUS / nearest_approach);
 }
+
+double CostFunctions::exceeds_speed_limit_cost(const Trajectory &trajectory,
+                                int target_vehicle_id,
+                                const VectorXd &delta,
+                                double T,
+                                const vector<Vehicle> &predictions) {
+  //get polynomial function for longitudinal-speed
+  //which is differentiation of s-coordinate function
+  VectorXd s_dot_coeffs = Utils::differentiate(trajectory.s_coeffs);
+
+  //we will divide total time in 100 steps and check for each timestep in T duration to find
+  //out speed (s_dot) for trajectory at each timestep and for given vehicle at that time step
+  double max_v = 0;
+  for (int i = 0; i < s_dot_coeffs.rows(); ++i) {
+    //consider i% of total time for each iteration
+    double t = (T/100) * i;
+
+    //calculate speed at time step t
+    double v_at_t = abs(Utils::solve_polynomial(s_dot_coeffs, t));
+
+    //we are only interested in absolute max velocity
+    if (v_at_t > max_v) {
+      max_v = v_at_t;
+    }
+  }
+
+  if (max_v > Constants::SPEED_LIMIT) {
+    return 1.0;
+  }
+
+  return 0.0;
+}

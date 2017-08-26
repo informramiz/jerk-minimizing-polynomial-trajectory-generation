@@ -89,6 +89,15 @@ public:
                      const VectorXd &delta,
                      double T,
                      const vector<Vehicle> &predictions);
+
+  /**
+   * Penalizes getting close to other vehicles.
+   */
+  double exceeds_speed_limit_cost(const Trajectory &trajectory,
+                                  int target_vehicle_id,
+                                  const VectorXd &delta,
+                                  double T,
+                                  const vector<Vehicle> &predictions);
 };
 
 #endif /* COST_FUNCTIONS_H_ */
