@@ -284,3 +284,42 @@ double CostFunctions::max_jerk_cost(const Trajectory &trajectory,
 
   return 0.0;
 }
+
+double CostFunctions::total_acceleration_cost(const Trajectory &trajectory,
+                                              int target_vehicle_id,
+                                              const VectorXd &delta,
+                                              double T,
+                                              const vector<Vehicle> &predictions) {
+  //get polynomial function for longitudinal-speed
+  //which is differentiation of s-coordinate function
+  VectorXd s_dot_coeffs = Utils::differentiate(trajectory.s_coeffs);
+
+  //get polynomial function for longitudinal-acceleration
+  //which is differentiation of longitudinal-speed function
+  VectorXd s_dot_dot_coeffs = Utils::differentiate(s_dot_coeffs);
+
+  //we will divide total time in 100 steps and check for each timestep in T duration to find
+  //out acceleration (s_dot_dot) for trajectory at each timestep and for given vehicle at that time step
+  double total_a = 0;
+  double dt = (T/100);
+  for (int i = 0; i < s_dot_dot_coeffs.rows(); ++i) {
+    //consider i% of total time for each iteration
+    double t = dt * i;
+
+    //calculate acceleration at time step t
+    double a = abs(Utils::solve_polynomial(s_dot_dot_coeffs, t));
+    //TODO: What does (a * dt) means here?
+    a = a * dt;
+
+    total_a += a;
+  }
+
+  //calculate acceleration per second
+  double acceleration_in_one_second = total_a / T;
+
+  if (acceleration_in_one_second > Constants::EXPECTED_ACCELERATION_IN_ONE_SEC) {
+    return 1.0;
+  }
+
+  return 0.0;
+}
