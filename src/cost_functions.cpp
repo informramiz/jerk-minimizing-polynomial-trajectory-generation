@@ -121,10 +121,10 @@ double CostFunctions::s_diff_cost(const Trajectory &trajectory,
 }
 
 double CostFunctions::collision_cost(const Trajectory &trajectory,
-                     int target_vehicle_id,
-                     const VectorXd &delta,
-                     double T,
-                     const vector<Vehicle> &predictions) {
+                                     int target_vehicle_id,
+                                     const VectorXd &delta,
+                                     double T,
+                                     const vector<Vehicle> &predictions) {
   //calculate nearest approach of trajectory to any vehicle in predictions
   double nearest_approach = Utils::nearest_approach_to_any_vehicle(trajectory, predictions);
 
@@ -135,4 +135,15 @@ double CostFunctions::collision_cost(const Trajectory &trajectory,
   }
 
   return 0.0;
+}
+
+double CostFunctions::buffer_cost(const Trajectory &trajectory,
+                                  int target_vehicle_id,
+                                  const VectorXd &delta,
+                                  double T,
+                                  const vector<Vehicle> &predictions) {
+  //calculate nearest approach of trajectory to any vehicle in predictions
+  double nearest_approach = Utils::nearest_approach_to_any_vehicle(trajectory, predictions);
+
+  return Utils::logistic(2*Constants::VEHICLE_RADIUS / nearest_approach);
 }
