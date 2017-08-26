@@ -108,6 +108,15 @@ public:
                                   double T,
                                   const vector<Vehicle> &predictions);
 
+  /**
+   * Rewards high average speeds.
+   */
+  double efficiency_cost(const Trajectory &trajectory,
+                                  int target_vehicle_id,
+                                  const VectorXd &delta,
+                                  double T,
+                                  const vector<Vehicle> &predictions);
+
 };
 
 #endif /* COST_FUNCTIONS_H_ */

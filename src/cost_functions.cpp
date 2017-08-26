@@ -149,10 +149,10 @@ double CostFunctions::buffer_cost(const Trajectory &trajectory,
 }
 
 double CostFunctions::exceeds_speed_limit_cost(const Trajectory &trajectory,
-                                int target_vehicle_id,
-                                const VectorXd &delta,
-                                double T,
-                                const vector<Vehicle> &predictions) {
+                                               int target_vehicle_id,
+                                               const VectorXd &delta,
+                                               double T,
+                                               const vector<Vehicle> &predictions) {
   //get polynomial function for longitudinal-speed
   //which is differentiation of s-coordinate function
   VectorXd s_dot_coeffs = Utils::differentiate(trajectory.s_coeffs);
@@ -181,10 +181,27 @@ double CostFunctions::exceeds_speed_limit_cost(const Trajectory &trajectory,
 }
 
 double CostFunctions::stays_on_road_cost(const Trajectory &trajectory,
-                                int target_vehicle_id,
-                                const VectorXd &delta,
-                                double T,
-                                const vector<Vehicle> &predictions) {
+                                         int target_vehicle_id,
+                                         const VectorXd &delta,
+                                         double T,
+                                         const vector<Vehicle> &predictions) {
   //TODO
   return 0.0;
+}
+
+/**
+ * Rewards high average speeds.
+ */
+double CostFunctions::efficiency_cost(const Trajectory &trajectory,
+                                      int target_vehicle_id,
+                                      const VectorXd &delta,
+                                      double T,
+                                      const vector<Vehicle> &predictions) {
+  //calculate avg_speed (v = s/t) of trajectory
+  double avg_v = Utils::solve_polynomial(trajectory.s_coeffs, trajectory.t) / trajectory.t;
+
+  //calculate speed of target vehicle
+  double target_v = predictions[target_vehicle_id].state_at(trajectory.t)[0] / trajectory.t;
+
+  return Utils::logistic(2 * (target_v - avg_v) / avg_v);
 }
