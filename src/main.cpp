@@ -219,15 +219,62 @@ void test_cases() {
   cout << "Total cost: " << total_cost << endl;
   assert((total_cost - 146.24) < 0.0001);
   
-  PolynomialTrajectoryGenerator ptg;
-  Goal goal(state1.head(3), state1.tail(3), T);
-  Goal perturbed_goal = ptg.perturb_goal(goal);
-  cout << "Perturbed goal: ";
-  perturbed_goal.print();
+//  PolynomialTrajectoryGenerator ptg;
+//  Goal goal(state1.head(3), state1.tail(3), T);
+//  Goal perturbed_goal = ptg.perturb_goal(goal);
+//  cout << "Perturbed goal: ";
+//  perturbed_goal.print();
 }
 
 int main() {
-  test_cases();
+//  test_cases();
 //  testJMT();
+
+
+//  vehicle = Vehicle([0,10,0, 0,0,0])
+//# predictions = {0: vehicle}
+//  # target = 0
+//  # #delta = [0, 0, 0, 0, 0 ,0]
+//  # delta = [-10, 0, 0, -4, 0, 0]
+//  # start_s = [10, 10, 0]
+//  # start_d = [4, 0, 0]
+//  # T = 5.0
+//  # best = PTG(start_s, start_d, target, delta, T, predictions)
+//  # show_trajectory(best[0], best[1], best[2], vehicle)
+
+  const double T = 5.0;
+  VectorXd state(6);
+  state << 0, 10, 0, 0, 0, 0;
+
+//  VectorXd state2(6);
+//  state2 << -1, 10, 0, 1, 0, 0;
+
+  /**
+   * delta - a length 6 array indicating the offset we are aiming for between us
+   *    and the target_vehicle. So if at time 5 the target vehicle will be at
+   *   [100, 10, 0, 0, 0, 0] and delta is [-10, 0, 0, 4, 0, 0], then our goal
+   *   state for t = 5 will be [90, 10, 0, 4, 0, 0]. This would correspond to a
+   *   goal of "follow 10 meters behind and 4 meters to the right of target vehicle"
+   */
+  VectorXd delta(6);
+//  delta << -10, 0, 0, -4, 0, 0;
+  delta << 0, 0, 0, 0, 0 ,0;
+
+  VectorXd start_s(3);
+  start_s << 10, 10, 0;
+
+  VectorXd start_d(3);
+  start_d << 4, 0, 0;
+
+  Vehicle vehicle1(state);
+//  Vehicle vehicle2(state2);
+  vector<Vehicle> predictions = {vehicle1};
+
+  int target_vehicle_id = 0;
+
+  PolynomialTrajectoryGenerator ptg;
+  Trajectory best = ptg.generate_trajectory(start_s, start_d, target_vehicle_id, delta, T, predictions);
+  Utils::plot_trajectory(best, vehicle1, true);
+
   return 0;
 }

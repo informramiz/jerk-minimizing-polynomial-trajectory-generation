@@ -10,6 +10,8 @@
 #include <math.h>
 #include "polynomial_trajectory_generator.h"
 #include "constants.h"
+#include "cost_functions.h"
+#include "utils.h"
 
 PolynomialTrajectoryGenerator::PolynomialTrajectoryGenerator() {
   // TODO Auto-generated constructor stub
@@ -18,6 +20,41 @@ PolynomialTrajectoryGenerator::PolynomialTrajectoryGenerator() {
 
 PolynomialTrajectoryGenerator::~PolynomialTrajectoryGenerator() {
   // TODO Auto-generated destructor stub
+}
+
+Trajectory PolynomialTrajectoryGenerator::generate_trajectory(const VectorXd &start_s,
+                                 const VectorXd &start_d,
+                                 int target_vehicle_id,
+                                 const VectorXd &delta,
+                                 double T,
+                                 const vector<Vehicle> &predictions) {
+  Vehicle target_vehicle = predictions[target_vehicle_id];
+  double timestep = 0.5;
+
+  vector<Goal> all_goals;
+  //account for noise in duration
+  double t = T - Constants::SIGMA_T * timestep;
+  while (t < T + Constants::SIGMA_T * timestep) {
+    //predict the sate of target vehicle at timstep t
+    //and add offset delta to target vehicle state
+    //which is the sate we want to achieve for ego vehicle
+    VectorXd target_state = target_vehicle.state_at(t);
+    Goal goal(target_state.head(3), target_state.tail(3), t);
+
+    //add this goal to list of goals
+    all_goals.push_back(goal);
+    vector<Goal> perturbed_goals = generate_perturbed_goals(goal);
+
+    //add these perturbed goals to list of goals
+    Utils::merge_vectors(all_goals, perturbed_goals);
+
+    t += timestep;
+  }
+
+  vector<Trajectory> trajectories = generate_trajectories(start_s, start_d, all_goals);
+  Trajectory best = find_best_trajectory(trajectories, target_vehicle_id, delta, T, predictions);
+
+  return best;
 }
 
 /**
@@ -139,5 +176,27 @@ vector<Trajectory> PolynomialTrajectoryGenerator::generate_trajectories(const Ve
   }
 
   return trajectories;
+}
+
+
+Trajectory PolynomialTrajectoryGenerator::find_best_trajectory(const vector<Trajectory> &trajectories,
+                                                               int target_vehicle_id,
+                                                               const VectorXd &delta,
+                                                               double T,
+                                                               const vector<Vehicle> &predictions) {
+  int min_trajectory_index = -1;
+  double min_cost = 999999;
+
+  CostFunctions cost_functions;
+  for (int i = 0; i < trajectories.size(); ++i) {
+    double cost = cost_functions.calculate_cost(trajectories[i], target_vehicle_id, delta, T, predictions);
+
+    if (cost < min_cost) {
+      min_cost = cost;
+      min_trajectory_index = i;
+    }
+  }
+
+  return trajectories[min_trajectory_index];
 }
 
