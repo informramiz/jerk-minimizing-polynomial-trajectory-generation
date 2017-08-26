@@ -7,96 +7,20 @@
 //============================================================================
 
 #include <iostream>
-#include <iostream>
 #include <fstream>
 #include <cmath>
 #include <vector>
 #include <cassert>
-#include <iomanip>
 #include "Eigen/Dense"
 #include "vehicle.h"
 #include "utils.h"
 #include "trajectory.h"
 #include "cost_functions.h"
+#include "jmt.h"
 
 using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
-
-/**
- * @Input: ([0, 10, 0], [10, 10, 0], 1)
- * @output: [0.0, 10.0, 0.0, 0.0, 0.0, 0.0]
- *
- */
-vector<double> JMT(vector<double> start, vector<double> end, double T) {
-
-  /*
-   Calculate the Jerk Minimizing Trajectory that connects the initial state
-   to the final state in time T.
-
-   INPUTS
-
-   start - the vehicles start location given as a length three array
-   corresponding to initial values of [s, s_dot, s_double_dot]
-
-   end   - the desired end state for vehicle. Like "start" this is a
-   length three array.
-
-   T     - The duration, in seconds, over which this maneuver should occur.
-
-   OUTPUT
-   an array of length 6, each value corresponding to a coefficent in the polynomial
-   s(t) = a_0 + a_1 * t + a_2 * t**2 + a_3 * t**3 + a_4 * t**4 + a_5 * t**5
-
-   EXAMPLE
-
-   > JMT( [0, 10, 0], [10, 10, 0], 1)
-   [0.0, 10.0, 0.0, 0.0, 0.0, 0.0]
-   */
-
-  double Si = start[0];
-  double Si_dot = start[1];
-  double Si_dot_dot = start[2];
-
-  double Sf = end[0];
-  double Sf_dot = end[1];
-  double Sf_dot_dot = end[2];
-
-  //a0 = Si
-  double a0 = Si;
-  //a1 = Si_dot
-  double a1 = Si_dot;
-  //a2 = Si_dot_dot/2
-  double a2 = Si_dot_dot / 2;
-
-  //C1 = Si + Si_dot*T + Si_dot_dot/2 * T^2
-  double C1 = Si + Si_dot * T + (Si_dot_dot/2) * pow(T, 2);
-
-  //C2 = Si_dot + Si_dot_dot*T
-  double C2 = Si_dot + Si_dot_dot * T;
-
-  //C3 = Si_dot_dot
-  double C3 = Si_dot_dot;
-
-  MatrixXd B(3, 3);
-  B << pow(T, 3), pow(T, 4), pow(T, 5),
-      3* pow(T, 2), 4 * pow(T, 3), 5 * pow(T, 4),
-      6 * T, 12 * pow(T, 2), 20 * pow(T, 3);
-
-  VectorXd s(3);
-  s << Sf-C1,
-      Sf_dot-C2,
-      Sf_dot_dot-C3;
-
-  VectorXd a = B.inverse() * s;
-
-  vector<double> answer = {a0,a1,a2,a[0],a[1],a[2]};
-  VectorXd v(6);
-  v << a0, a1, a2, answer[3], answer[4], answer[5];
-
-  cout << "answer: \n" << v << endl;
-  return answer;
-}
 
 bool close_enough(vector<double> poly, vector<double> target_poly, double eps =
                       0.01) {
@@ -152,8 +76,9 @@ void testJMT() {
 
   bool total_correct = true;
   for (int i = 0; i < tc.size(); i++) {
-    vector<double> jmt = JMT(tc[i].start, tc[i].end, tc[i].T);
-    bool correct = close_enough(jmt, answers[i]);
+    class JMT jmt1;
+    VectorXd generated_jmt = jmt1.generate_jmt(Utils::vectorToVectorXd(tc[i].start), Utils::vectorToVectorXd(tc[i].end), tc[i].T);
+    bool correct = close_enough(Utils::VectorXdToVector(generated_jmt), answers[i]);
     total_correct &= correct;
 
   }
@@ -287,6 +212,7 @@ void test_cases() {
 }
 
 int main() {
-  test_cases();
+//  test_cases();
+  testJMT();
   return 0;
 }
