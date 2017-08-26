@@ -23,6 +23,10 @@ public:
   virtual ~PolynomialTrajectoryGenerator();
 
   VectorXd generate_jerk_minimized_trajectory(VectorXd start, VectorXd end, double T);
+  void perturb_goal(const VectorXd &goal_s,
+                    const VectorXd &goal_d,
+                    VectorXd &goal_s_out,
+                    VectorXd &goal_d_out);
 };
 
 #endif /* POLYNOMIAL_TRAJECTORY_GENERATOR_H_ */

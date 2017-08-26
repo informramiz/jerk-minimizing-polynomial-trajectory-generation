@@ -5,9 +5,11 @@
  *      Author: ramiz
  */
 
+#include <iostream>
+#include <random>
 #include <math.h>
-
 #include "polynomial_trajectory_generator.h"
+#include "constants.h"
 
 PolynomialTrajectoryGenerator::PolynomialTrajectoryGenerator() {
   // TODO Auto-generated constructor stub
@@ -21,7 +23,6 @@ PolynomialTrajectoryGenerator::~PolynomialTrajectoryGenerator() {
 /**
  * @Input: ([0, 10, 0], [10, 10, 0], 1)
  * @output: [0.0, 10.0, 0.0, 0.0, 0.0, 0.0]
- *
  */
 VectorXd PolynomialTrajectoryGenerator::generate_jerk_minimized_trajectory(VectorXd start, VectorXd end, double T) {
 
@@ -88,5 +89,29 @@ VectorXd PolynomialTrajectoryGenerator::generate_jerk_minimized_trajectory(Vecto
   VectorXd answer(6);
   answer << a0, a1, a2, a[0], a[1], a[2];
   return answer;
+}
+
+void PolynomialTrajectoryGenerator::perturb_goal(const VectorXd &goal_s,
+                                                 const VectorXd &goal_d,
+                                                 VectorXd &goal_s_out,
+                                                 VectorXd &goal_d_out) {
+  VectorXd perturbed_goal_s(3);
+  VectorXd perturbed_goal_d(3);
+
+  std::default_random_engine random_number_generator;
+  for (int i = 0; i < goal_s[i]; ++i) {
+    //create a normal distribution with goal_s[i] as mean (mu) and SIGMA_S[i]
+    //as variance to account for noise
+    std::normal_distribution<double> s_normal_distribution(goal_s[i], Constants::SIGMA_S[i]);
+    //generate a s-number/goal_s using gaussian distribution
+    perturbed_goal_s[i] = s_normal_distribution(random_number_generator);
+
+    //similarly for d-coordinate
+    std::normal_distribution<double> d_normal_distribution(goal_d[i], Constants::SIGMA_D[i]);
+    perturbed_goal_d[i] = d_normal_distribution(random_number_generator);
+  }
+
+  goal_s_out = perturbed_goal_s;
+  goal_d_out = perturbed_goal_d;
 }
 
