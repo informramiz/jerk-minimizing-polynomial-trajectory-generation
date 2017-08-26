@@ -91,10 +91,10 @@ VectorXd PolynomialTrajectoryGenerator::generate_jerk_minimized_trajectory(Vecto
   return answer;
 }
 
-void PolynomialTrajectoryGenerator::perturb_goal(const VectorXd &goal_s,
-                                                 const VectorXd &goal_d,
-                                                 VectorXd &goal_s_out,
-                                                 VectorXd &goal_d_out) {
+Goal PolynomialTrajectoryGenerator::perturb_goal(const Goal &goal) {
+  VectorXd goal_s = goal.s;
+  VectorXd goal_d = goal.d;
+
   VectorXd perturbed_goal_s(3);
   VectorXd perturbed_goal_d(3);
 
@@ -112,7 +112,8 @@ void PolynomialTrajectoryGenerator::perturb_goal(const VectorXd &goal_s,
     perturbed_goal_d[i] = d_normal_distribution(random_number_generator);
   }
 
-  goal_s_out = perturbed_goal_s;
-  goal_d_out = perturbed_goal_d;
+  Goal perturbed_goal(perturbed_goal_s, perturbed_goal_d, goal.t);
+  return perturbed_goal;
+}
 }
 

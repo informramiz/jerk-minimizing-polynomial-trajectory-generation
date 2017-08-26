@@ -19,6 +19,7 @@
 #include "trajectory.h"
 #include "cost_functions.h"
 #include "polynomial_trajectory_generator.h"
+#include "goal.h"
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -219,20 +220,14 @@ void test_cases() {
   assert((total_cost - 146.24) < 0.0001);
   
   PolynomialTrajectoryGenerator ptg;
-
-  VectorXd perturbed_s(3);
-  VectorXd perturbed_d(3);
-  ptg.perturb_goal(state1.head(3), state1.tail(3), perturbed_s, perturbed_d);
-  cout << "Perturbed s: " << endl << perturbed_s << endl;
-  cout << "Perturbed d: " << endl << perturbed_d << endl;
+  Goal goal(state1.head(3), state1.tail(3), T);
+  Goal perturbed_goal = ptg.perturb_goal(goal);
+  cout << "Perturbed goal: ";
+  perturbed_goal.print();
 }
 
 int main() {
-//  test_cases();
+  test_cases();
 //  testJMT();
-  vector<int> v1 = {1, 2};
-  vector<int> v2 = {3, 2};
-  Utils::merge_vectors(v2, v1);
-  Utils::print_vector(v2);
   return 0;
 }

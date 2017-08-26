@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include "Eigen/Dense"
+#include "Goal.h"
 
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
@@ -23,10 +24,7 @@ public:
   virtual ~PolynomialTrajectoryGenerator();
 
   VectorXd generate_jerk_minimized_trajectory(VectorXd start, VectorXd end, double T);
-  void perturb_goal(const VectorXd &goal_s,
-                    const VectorXd &goal_d,
-                    VectorXd &goal_s_out,
-                    VectorXd &goal_d_out);
+  Goal perturb_goal(const Goal &goal);
 };
 
 #endif /* POLYNOMIAL_TRAJECTORY_GENERATOR_H_ */
