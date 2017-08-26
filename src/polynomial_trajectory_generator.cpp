@@ -126,3 +126,18 @@ vector<Goal> PolynomialTrajectoryGenerator::generate_perturbed_goals(const Goal 
   return perturbed_goals;
 }
 
+vector<Trajectory> PolynomialTrajectoryGenerator::generate_trajectories(const VectorXd &start_s,
+                                                                        const VectorXd &start_d,
+                                                                        const vector<Goal> &goals) {
+  vector<Trajectory> trajectories;
+  for(int i = 0; i < goals.size(); ++i) {
+    VectorXd s_coeffs = generate_jerk_minimized_trajectory(start_s, goals[i].s, goals[i].t);
+    VectorXd d_coeffs = generate_jerk_minimized_trajectory(start_d, goals[i].d, goals[i].t);
+
+    Trajectory trajectory(s_coeffs, d_coeffs, goals[i].t);
+    trajectories.push_back(trajectory);
+  }
+
+  return trajectories;
+}
+
