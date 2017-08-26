@@ -64,6 +64,8 @@ def buffer_cost(traj, target_vehicle, delta, T, predictions):
     Penalizes getting close to other vehicles.
     """
     nearest = nearest_approach_to_any_vehicle(traj, predictions)
+    if (nearest == 0):
+        return 1
     return logistic(2*VEHICLE_RADIUS / nearest)
 
 def stays_on_road_cost(traj, target_vehicle, delta, T, predictions):
