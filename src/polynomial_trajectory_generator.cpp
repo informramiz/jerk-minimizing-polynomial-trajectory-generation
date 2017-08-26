@@ -115,5 +115,14 @@ Goal PolynomialTrajectoryGenerator::perturb_goal(const Goal &goal) {
   Goal perturbed_goal(perturbed_goal_s, perturbed_goal_d, goal.t);
   return perturbed_goal;
 }
+
+vector<Goal> PolynomialTrajectoryGenerator::generate_perturbed_goals(const Goal &actual_goal) {
+  vector<Goal> perturbed_goals;
+  for (int i = 0; i < Constants::N_SAMPLES; ++i) {
+    Goal perturbed_goal = perturb_goal(actual_goal);
+    perturbed_goals.push_back(perturbed_goal);
+  }
+
+  return perturbed_goals;
 }
 

@@ -25,6 +25,8 @@ public:
 
   VectorXd generate_jerk_minimized_trajectory(VectorXd start, VectorXd end, double T);
   Goal perturb_goal(const Goal &goal);
+
+  vector<Goal> generate_perturbed_goals(const Goal &actual_goal);
 };
 
 #endif /* POLYNOMIAL_TRAJECTORY_GENERATOR_H_ */
