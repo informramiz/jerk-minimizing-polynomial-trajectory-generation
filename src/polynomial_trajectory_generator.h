@@ -22,6 +22,8 @@ using namespace std;
 
 class PolynomialTrajectoryGenerator {
 public:
+  friend void testJMT();
+
   PolynomialTrajectoryGenerator();
   virtual ~PolynomialTrajectoryGenerator();
 
@@ -60,6 +62,8 @@ public:
                                  const VectorXd &delta,
                                  double T,
                                  const vector<Vehicle> &predictions);
+
+private:
 
   VectorXd generate_jerk_minimized_trajectory(VectorXd start, VectorXd end, double T);
   Goal perturb_goal(const Goal &goal);
