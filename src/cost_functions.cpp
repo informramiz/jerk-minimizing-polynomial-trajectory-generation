@@ -119,3 +119,20 @@ double CostFunctions::s_diff_cost(const Trajectory &trajectory,
 
   return cost;
 }
+
+double CostFunctions::collision_cost(const Trajectory &trajectory,
+                     int target_vehicle_id,
+                     const VectorXd &delta,
+                     double T,
+                     const vector<Vehicle> &predictions) {
+  //calculate nearest approach of trajectory to any vehicle in predictions
+  double nearest_approach = Utils::nearest_approach_to_any_vehicle(trajectory, predictions);
+
+  //check if this is less than 2 * VEHICLE_RADIUS (diameter of vehicle)
+  //then we consider it a collision
+  if (nearest_approach < 2 * Constants::VEHICLE_RADIUS) {
+    return 1.0;
+  }
+
+  return 0.0;
+}
