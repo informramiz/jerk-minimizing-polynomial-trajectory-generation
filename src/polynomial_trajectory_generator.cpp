@@ -38,7 +38,7 @@ Trajectory PolynomialTrajectoryGenerator::generate_trajectory(const VectorXd &st
     //predict the sate of target vehicle at timstep t
     //and add offset delta to target vehicle state
     //which is the sate we want to achieve for ego vehicle
-    VectorXd target_state = target_vehicle.state_at(t);
+    VectorXd target_state = target_vehicle.state_at(t) + delta;
     Goal goal(target_state.head(3), target_state.tail(3), t);
 
     //add this goal to list of goals
