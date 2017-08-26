@@ -5,6 +5,8 @@
  *      Author: ramiz
  */
 
+#include "polynomial_trajectory_generator.h"
+
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -14,7 +16,6 @@
 #include "Eigen/Dense"
 #include "vehicle.h"
 #include "utils.h"
-#include "jmt.h"
 
 bool close_enough(vector<double> poly, vector<double> target_poly, double eps =
                       0.01) {
@@ -70,7 +71,7 @@ void testJMT() {
 
   bool total_correct = true;
   for (int i = 0; i < tc.size(); i++) {
-    class JMT jmt1;
+    class PolynomialTrajectoryGenerator jmt1;
     VectorXd generated_jmt = jmt1.generate_jmt(Utils::vectorToVectorXd(tc[i].start), Utils::vectorToVectorXd(tc[i].end), tc[i].T);
     bool correct = close_enough(Utils::VectorXdToVector(generated_jmt), answers[i]);
     total_correct &= correct;

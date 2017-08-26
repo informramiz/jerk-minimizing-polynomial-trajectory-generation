@@ -16,7 +16,7 @@
 #include "utils.h"
 #include "trajectory.h"
 #include "cost_functions.h"
-#include "jmt.h"
+#include "polynomial_trajectory_generator.h"
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -76,7 +76,7 @@ void testJMT() {
 
   bool total_correct = true;
   for (int i = 0; i < tc.size(); i++) {
-    class JMT jmt1;
+    class PolynomialTrajectoryGenerator jmt1;
     VectorXd generated_jmt = jmt1.generate_jmt(Utils::vectorToVectorXd(tc[i].start), Utils::vectorToVectorXd(tc[i].end), tc[i].T);
     bool correct = close_enough(Utils::VectorXdToVector(generated_jmt), answers[i]);
     total_correct &= correct;

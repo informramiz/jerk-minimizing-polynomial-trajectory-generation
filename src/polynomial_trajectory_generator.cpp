@@ -6,14 +6,15 @@
  */
 
 #include <math.h>
-#include "jmt.h"
 
-JMT::JMT() {
+#include "polynomial_trajectory_generator.h"
+
+PolynomialTrajectoryGenerator::PolynomialTrajectoryGenerator() {
   // TODO Auto-generated constructor stub
 
 }
 
-JMT::~JMT() {
+PolynomialTrajectoryGenerator::~PolynomialTrajectoryGenerator() {
   // TODO Auto-generated destructor stub
 }
 
@@ -22,7 +23,7 @@ JMT::~JMT() {
  * @output: [0.0, 10.0, 0.0, 0.0, 0.0, 0.0]
  *
  */
-VectorXd JMT::generate_jmt(VectorXd start, VectorXd end, double T) {
+VectorXd PolynomialTrajectoryGenerator::generate_jmt(VectorXd start, VectorXd end, double T) {
 
   /*
    Calculate the Jerk Minimizing Trajectory that connects the initial state
