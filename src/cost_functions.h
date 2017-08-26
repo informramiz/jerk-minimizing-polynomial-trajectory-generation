@@ -32,7 +32,7 @@ public:
    *
    */
   double time_diff_cost(const Trajectory &trajectory,
-                        const Vehicle &target_vehicle,
+                        int target_vehicle_id,
                         const VectorXd &delta,
                         double T,
                         const vector<Vehicle> &vehicles);
@@ -50,7 +50,7 @@ public:
    *   goal of "follow 10 meters behind and 4 meters to the right of target vehicle"
    */
   double d_diff_cost(const Trajectory &trajectory,
-                     const Vehicle &target_vehicle,
+                     int target_vehicle_id,
                      const VectorXd &delta,
                      double T,
                      const vector<Vehicle> &vehicles);

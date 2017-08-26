@@ -20,19 +20,19 @@ CostFunctions::~CostFunctions() {
 }
 
 double CostFunctions::time_diff_cost(const Trajectory &trajectory,
-                        const Vehicle &target_vehicle,
-                        const VectorXd &delta,
-                        double T,
-                        const vector<Vehicle> &vehicles) {
+                                     int target_vehicle_id,
+                                     const VectorXd &delta,
+                                     double T,
+                                     const vector<Vehicle> &vehicles) {
 
   return Utils::logistic(abs(T - trajectory.t) / T);
 }
 
 double CostFunctions::d_diff_cost(const Trajectory &trajectory,
-                   const Vehicle &target_vehicle,
-                   const VectorXd &delta,
-                   double T,
-                   const vector<Vehicle> &vehicles) {
+                                  int target_vehicle_id,
+                                  const VectorXd &delta,
+                                  double T,
+                                  const vector<Vehicle> &vehicles) {
 
   //as there is separate function for time_diff cost
   //so in this function we will consider time of trajectory
@@ -57,6 +57,8 @@ double CostFunctions::d_diff_cost(const Trajectory &trajectory,
   VectorXd actual_state(3);
   actual_state << d_at_t, v_at_t, a_at_t;
 
+  //get the target vehicle from predictions using target_vehicle_id
+  Vehicle target_vehicle = vehicles[target_vehicle_id];
   //predict the state of the target vehicle
   VectorXd target_vehicle_state = target_vehicle.state_at(T);
   //add the required difference in (d, v, a) values that ego vehicle has to keep from target vehicle

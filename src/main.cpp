@@ -186,6 +186,8 @@ void test_cases() {
   Vehicle vehicle2(state2);
   vector<Vehicle> vehicles = {vehicle1, vehicle2};
 
+  int target_vehicle_id = 0;
+
   VectorXd coeffs(6);
   coeffs << 0, 10, 0, 2, 0, 5;
 
@@ -231,9 +233,14 @@ void test_cases() {
 //  Utils::plot_trajectory(trajectory, vehicle2, true);
 
   CostFunctions cost_functions;
-  double time_diff_cost = cost_functions.time_diff_cost(trajectory, vehicle1, delta, 9, vehicles);
+
+  //time_diff cost function test
+  double time_diff_cost = cost_functions.time_diff_cost(trajectory, target_vehicle_id, delta, 9, vehicles);
   cout << "Time diff cost: " << time_diff_cost << endl;
   assert( (time_diff_cost - 0.218) < 0.001);
+
+  double d_diff_cost = cost_functions.d_diff_cost(trajectory, target_vehicle_id, delta, 9, vehicles);
+  cout << "d diff cost: " << d_diff_cost << endl;
 }
 
 int main() {
