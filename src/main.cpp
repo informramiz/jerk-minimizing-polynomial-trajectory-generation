@@ -254,6 +254,11 @@ void test_cases() {
   double buffer_cost = cost_functions.buffer_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "buffer cost: " << buffer_cost << endl;
   assert((buffer_cost - 0.7859) < 0.0001);
+
+  double exceeds_speed_limit_cost = cost_functions.exceeds_speed_limit_cost(trajectory, target_vehicle_id, delta, T, vehicles);
+  cout << "exceeds speed limit cost: " << exceeds_speed_limit_cost << endl;
+  assert(exceeds_speed_limit_cost == 0);
+
 }
 
 int main() {
