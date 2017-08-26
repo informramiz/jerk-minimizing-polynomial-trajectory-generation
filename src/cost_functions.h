@@ -153,6 +153,18 @@ public:
                          double T,
                          const vector<Vehicle> &predictions);
 
+  /**
+   * Calculates cost for given trajectory and based on given predictions
+   */
+  double calculate_cost(const Trajectory &trajectory,
+                        int target_vehicle_id,
+                        const VectorXd &delta,
+                        double T,
+                        const vector<Vehicle> &predictions,
+                        bool verbose = false);
+
+  //***************Data members*******************//
+
   ///define an alias type name for function pointer
   typedef double (CostFunctions::* cost_function_ptr) (const Trajectory &trajectory,
                                                       int target_vehicle_id,

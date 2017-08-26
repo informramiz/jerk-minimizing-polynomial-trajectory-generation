@@ -361,3 +361,24 @@ double CostFunctions::total_jerk_cost(const Trajectory &trajectory,
 
   return Utils::logistic(jerk_in_one_second / Constants::EXPECTED_JERK_IN_ONE_SEC);
 }
+
+double CostFunctions::calculate_cost(const Trajectory &trajectory,
+                                     int target_vehicle_id,
+                                     const VectorXd &delta,
+                                     double T,
+                                     const vector<Vehicle> &predictions,
+                                     bool verbose) {
+  double total_cost = 0.0;
+  for (int i = 0; i < cost_functions_pointers.size(); ++i) {
+    double cost = (this->*cost_functions_pointers[i])(trajectory, target_vehicle_id, delta, T, predictions);
+    cost *= cost_functions_weights[i];
+
+    if (verbose) {
+      printf("Cost for function %s is %f\n", cost_functions_names[i].c_str(), cost) ;
+    }
+
+    total_cost += cost;
+  }
+
+  return total_cost;
+}
