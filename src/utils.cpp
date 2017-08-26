@@ -162,6 +162,8 @@ void Utils::plot_trajectory(const Trajectory &trajectory, const Vehicle &vehicle
     plt::named_plot("Target Vehicle", vehicle_s_values, vehicle_d_values, "r--");
   }
 
+  plt::xlim(0, 100);
+  plt::ylim(0, 6);
   plt::legend();
   plt::show();
 }
