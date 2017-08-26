@@ -99,6 +99,10 @@ void test_all_cost_functions() {
   double total_jerk_cost = cost_functions.total_jerk_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "Total jerk cost: " << total_jerk_cost << endl;
   assert (total_jerk_cost == 0);
+
+  double total_cost = cost_functions.calculate_cost(trajectory, target_vehicle_id, delta, T, vehicles, true);
+  cout << "Total cost: " << total_cost << endl;
+  assert((total_cost - 83.7191) < 0.0001);
 }
 
 
