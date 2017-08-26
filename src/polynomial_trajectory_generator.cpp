@@ -99,7 +99,8 @@ void PolynomialTrajectoryGenerator::perturb_goal(const VectorXd &goal_s,
   VectorXd perturbed_goal_d(3);
 
   std::default_random_engine random_number_generator;
-  for (int i = 0; i < goal_s[i]; ++i) {
+
+  for (int i = 0; i < goal_s.rows(); ++i) {
     //create a normal distribution with goal_s[i] as mean (mu) and SIGMA_S[i]
     //as variance to account for noise
     std::normal_distribution<double> s_normal_distribution(goal_s[i], Constants::SIGMA_S[i]);
