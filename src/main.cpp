@@ -17,6 +17,7 @@
 #include "vehicle.h"
 #include "utils.h"
 #include "trajectory.h"
+#include "cost_functions.h"
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -164,11 +165,22 @@ void testJMT() {
 }
 
 void test_cases() {
+  const double T = 5;
   VectorXd state1(6);
   state1 << 0, 10, 0, 0, 0, 0;
 
   VectorXd state2(6);
   state2 << -1, 10, 0, 1, 0, 0;
+
+  /**
+   * delta - a length 6 array indicating the offset we are aiming for between us
+   *    and the target_vehicle. So if at time 5 the target vehicle will be at
+   *   [100, 10, 0, 0, 0, 0] and delta is [-10, 0, 0, 4, 0, 0], then our goal
+   *   state for t = 5 will be [90, 10, 0, 4, 0, 0]. This would correspond to a
+   *   goal of "follow 10 meters behind and 4 meters to the right of target vehicle"
+   */
+  VectorXd delta(6);
+  delta << -10, 0, 0, -4, 0, 0;
 
   Vehicle vehicle1(state1);
   Vehicle vehicle2(state2);
@@ -180,10 +192,10 @@ void test_cases() {
   VectorXd s_coeffs = coeffs.head(3);
   VectorXd d_coeffs = coeffs.tail(3);
 
-  Trajectory trajectory(s_coeffs, d_coeffs, 5);
+  Trajectory trajectory(s_coeffs, d_coeffs, T);
 
   //vehicle state update
-  VectorXd new_state = vehicle1.state_at(5);
+  VectorXd new_state = vehicle1.state_at(T);
   cout << "Predicted state of vehicle: " << new_state.transpose() << endl;
   VectorXd vehicle_new_state_answer(6);
   vehicle_new_state_answer << 50, 10, 0, 0, 0, 0;
@@ -216,7 +228,12 @@ void test_cases() {
   cout << "closest approach to any vehicle: " << closest_approach_to_any_vehicle << endl;
   assert((closest_approach_to_any_vehicle - 1.41421) < 0.00001);
 
-  Utils::plot_trajectory(trajectory, vehicle2, true);
+//  Utils::plot_trajectory(trajectory, vehicle2, true);
+
+  CostFunctions cost_functions;
+  double time_diff_cost = cost_functions.time_diff_cost(trajectory, vehicle1, delta, 9, vehicles);
+  cout << "Time diff cost: " << time_diff_cost << endl;
+  assert( (time_diff_cost - 0.218) < 0.001);
 }
 
 int main() {
