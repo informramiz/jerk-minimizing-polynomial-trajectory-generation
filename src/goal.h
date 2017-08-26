@@ -8,7 +8,9 @@
 #ifndef GOAL_H_
 #define GOAL_H_
 
+#include <iostream>
 #include "Eigen/Dense"
+using namespace std;
 using Eigen::VectorXd;
 
 struct Goal {
@@ -20,6 +22,13 @@ struct Goal {
     this->s = s;
     this->d = d;
     this->t = t;
+  }
+
+  void print() {
+    cout << "Goal:" << endl;
+    cout << "s: " << s << endl;
+    cout << "d: " << d << endl;
+    cout << "t: " << t << endl;
   }
 };
 
