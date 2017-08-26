@@ -6,6 +6,8 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
+//#define NDEBUG
+
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -116,8 +118,14 @@ void test_cases() {
   VectorXd coeffs(6);
   coeffs << 0, 10, 0, 2, 0, 5;
 
-  VectorXd s_coeffs = coeffs.head(3);
-  VectorXd d_coeffs = coeffs.tail(3);
+  VectorXd s_coeffs(6);
+  s_coeffs << 0, 3, 0, 1, 0, 4;
+
+  VectorXd d_coeffs(6);
+  d_coeffs << 0, 1, 0, 2, 0, 5;
+
+//  VectorXd s_coeffs = coeffs.head(3);
+//  VectorXd d_coeffs = coeffs.tail(3);
 
   Trajectory trajectory(s_coeffs, d_coeffs, T);
 
@@ -148,7 +156,7 @@ void test_cases() {
   //closest approach to a vehicle test
   double closest_approach = Utils::nearest_approach_to_vehicle(trajectory, vehicle1);
   cout << "closest approach to a vehicle: " << closest_approach << endl;
-  assert(closest_approach == 2.0);
+  assert(closest_approach == 0);
 
   //closet approach to any vehicle
   double closest_approach_to_any_vehicle = Utils::nearest_approach_to_any_vehicle(trajectory, vehicles);
@@ -166,11 +174,11 @@ void test_cases() {
 
   double d_diff_cost = cost_functions.d_diff_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "d diff cost: " << d_diff_cost << endl;
-  assert( (d_diff_cost - 2.999) < 0.001);
+  assert( (d_diff_cost - 3) < 0.001);
 
   double s_diff_cost = cost_functions.s_diff_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "s diff cost: " << s_diff_cost << endl;
-  assert( (s_diff_cost - 0.462) < 0.001);
+  assert( (s_diff_cost - 3) < 0.001);
 
   double collision_cost = cost_functions.collision_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "collision cost: " << collision_cost << endl;
@@ -178,41 +186,43 @@ void test_cases() {
 
   double buffer_cost = cost_functions.buffer_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "buffer cost: " << buffer_cost << endl;
-  assert((buffer_cost - 0.7859) < 0.0001);
+  assert((buffer_cost - 1) < 0.0001);
 
   double exceeds_speed_limit_cost = cost_functions.exceeds_speed_limit_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "exceeds speed limit cost: " << exceeds_speed_limit_cost << endl;
-  assert(exceeds_speed_limit_cost == 0);
+  assert(exceeds_speed_limit_cost == 1);
 
   double efficiency_cost = cost_functions.efficiency_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "Efficiency cost: " << efficiency_cost << endl;
-  assert (efficiency_cost == 0.0);
+  assert ((efficiency_cost - (-0.759)) < 0.001);
 
   double max_accel_cost = cost_functions.max_acceleration_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "Max accel cost: " << max_accel_cost << endl;
-  assert (max_accel_cost == 0.0);
+  assert (max_accel_cost == 1.0);
 
   double max_jerk_cost = cost_functions.max_jerk_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "Max jerk cost: " << max_jerk_cost << endl;
-  assert (max_jerk_cost == 0.0);
+  assert (max_jerk_cost == 1.0);
 
   double total_accel_cost = cost_functions.total_acceleration_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "Total accel cost: " << total_accel_cost << endl;
-  assert (total_accel_cost == 0);
+  assert (total_accel_cost == 1);
 
   double total_jerk_cost = cost_functions.total_jerk_cost(trajectory, target_vehicle_id, delta, T, vehicles);
   cout << "Total jerk cost: " << total_jerk_cost << endl;
-  assert (total_jerk_cost == 0);
+  assert (total_jerk_cost == 1);
 
   cout << endl << endl;
 
   double total_cost = cost_functions.calculate_cost(trajectory, target_vehicle_id, delta, T, vehicles, true);
   cout << "Total cost: " << total_cost << endl;
-  assert((total_cost - 83.7191) < 0.0001);
+  assert((total_cost - 146.24) < 0.0001);
+  
+  
 }
 
 int main() {
-//  test_cases();
-  testJMT();
+  test_cases();
+//  testJMT();
   return 0;
 }
