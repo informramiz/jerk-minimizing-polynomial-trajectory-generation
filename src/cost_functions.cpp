@@ -160,7 +160,7 @@ double CostFunctions::exceeds_speed_limit_cost(const Trajectory &trajectory,
   //we will divide total time in 100 steps and check for each timestep in T duration to find
   //out speed (s_dot) for trajectory at each timestep and for given vehicle at that time step
   double max_v = 0;
-  for (int i = 0; i < s_dot_coeffs.rows(); ++i) {
+  for (int i = 0; i < 100; ++i) {
     //consider i% of total time for each iteration
     double t = (T/100) * i;
 
@@ -203,6 +203,8 @@ double CostFunctions::efficiency_cost(const Trajectory &trajectory,
   //calculate speed of target vehicle
   double target_v = predictions[target_vehicle_id].state_at(trajectory.t)[0] / trajectory.t;
 
+  //multiply by 2 to make cost negative (reward) for trajectories
+  //that stay close to target velocity
   return Utils::logistic(2 * (target_v - avg_v) / avg_v);
 }
 
@@ -222,7 +224,7 @@ double CostFunctions::max_acceleration_cost(const Trajectory &trajectory,
   //we will divide total time in 100 steps and check for each timestep in T duration to find
   //out acceleration (s_dot_dot) for trajectory at each timestep and for given vehicle at that time step
   double max_a = 0;
-  for (int i = 0; i < s_dot_dot_coeffs.rows(); ++i) {
+  for (int i = 0; i < 100; ++i) {
     //consider i% of total time for each iteration
     double t = (T/100) * i;
 
@@ -265,7 +267,7 @@ double CostFunctions::max_jerk_cost(const Trajectory &trajectory,
   //we will divide total time in 100 steps and check for each timestep in T duration to find
   //out jerk (s_dot_dot_dot) for trajectory at each timestep and for given vehicle at that time step
   double max_jerk = 0;
-  for (int i = 0; i < s_dot_dot_dot_coeffs.rows(); ++i) {
+  for (int i = 0; i < 100; ++i) {
     //consider i% of total time for each iteration
     double t = (T/100) * i;
 
@@ -302,7 +304,7 @@ double CostFunctions::total_acceleration_cost(const Trajectory &trajectory,
   //out acceleration (s_dot_dot) for trajectory at each timestep and for given vehicle at that time step
   double total_a = 0;
   double dt = (T/100);
-  for (int i = 0; i < s_dot_dot_coeffs.rows(); ++i) {
+  for (int i = 0; i < 100; ++i) {
     //consider i% of total time for each iteration
     double t = dt * i;
 
@@ -342,7 +344,7 @@ double CostFunctions::total_jerk_cost(const Trajectory &trajectory,
   //out jerk (s_dot_dot_dot) for trajectory at each timestep and for given vehicle at that time step
   double total_jerk = 0;
   double dt = (T/100);
-  for (int i = 0; i < s_dot_dot_dot_coeffs.rows(); ++i) {
+  for (int i = 0; i < 100; ++i) {
     //consider i% of total time for each iteration
     double t = dt * i;
 
