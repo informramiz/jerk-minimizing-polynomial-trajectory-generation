@@ -247,7 +247,9 @@ void test_cases() {
   cout << "s diff cost: " << s_diff_cost << endl;
   assert( (s_diff_cost - 0.462) < 0.001);
 
-
+  double collision_cost = cost_functions.collision_cost(trajectory, target_vehicle_id, delta, T, vehicles);
+  cout << "collision cost: " << collision_cost << endl;
+  assert(collision_cost == 1);
 }
 
 int main() {
