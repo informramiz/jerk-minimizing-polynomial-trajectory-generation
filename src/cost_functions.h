@@ -189,6 +189,21 @@ public:
       1, //total_acceleration_cost
       5, //total_jerk_cost
   };
+
+  const vector<string> cost_functions_names = {
+        "time_diff_cost",
+        "s_diff_cost",
+        "d_diff_cost",
+        "collision_cost",
+        "efficiency_cost",
+        "exceeds_speed_limit_cost",
+        "stays_on_road_cost",
+        "buffer_cost",
+        "max_acceleration_cost",
+        "max_jerk_cost",
+        "total_acceleration_cost",
+        "total_jerk_cost",
+    };
 };
 
 #endif /* COST_FUNCTIONS_H_ */
