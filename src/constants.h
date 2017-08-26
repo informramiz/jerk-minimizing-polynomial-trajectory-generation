@@ -27,7 +27,4 @@ public:
   constexpr static const double VEHICLE_RADIUS = 1.5; //model vehicle as circle to simplify collision detection
 };
 
-const vector<double> Constants::SIGMA_S = {10.0, 4.0, 2.0}; //[s, s_dot, s_dot_dot]
-const vector<double> Constants::SIGMA_D = {1.0, 1.0, 1.0}; //[d, d_dot, d_dot_dot]
-
 #endif /* CONSTANTS_H_ */
