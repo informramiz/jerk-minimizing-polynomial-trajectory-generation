@@ -244,7 +244,7 @@ int main() {
 
   const double T = 5.0;
   VectorXd state(6);
-  state << 0, 10, 0, 0, 0, 0;
+  state << 5, 10, 0, 3, 0, 0;
 
 //  VectorXd state2(6);
 //  state2 << -1, 10, 0, 1, 0, 0;
@@ -258,7 +258,7 @@ int main() {
    */
   VectorXd delta(6);
 //  delta << -10, 0, 0, -4, 0, 0;
-  delta << 0, 0, 0, 0, 0 ,0;
+  delta << -10, 0, 0, 0, 0 ,0;
 
   VectorXd start_s(3);
   start_s << 10, 10, 0;
