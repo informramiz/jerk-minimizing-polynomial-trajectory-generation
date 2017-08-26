@@ -179,3 +179,12 @@ double CostFunctions::exceeds_speed_limit_cost(const Trajectory &trajectory,
 
   return 0.0;
 }
+
+double CostFunctions::stays_on_road_cost(const Trajectory &trajectory,
+                                int target_vehicle_id,
+                                const VectorXd &delta,
+                                double T,
+                                const vector<Vehicle> &predictions) {
+  //TODO
+  return 0.0;
+}
