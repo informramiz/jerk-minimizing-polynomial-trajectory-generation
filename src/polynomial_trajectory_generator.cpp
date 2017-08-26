@@ -23,7 +23,7 @@ PolynomialTrajectoryGenerator::~PolynomialTrajectoryGenerator() {
  * @output: [0.0, 10.0, 0.0, 0.0, 0.0, 0.0]
  *
  */
-VectorXd PolynomialTrajectoryGenerator::generate_jmt(VectorXd start, VectorXd end, double T) {
+VectorXd PolynomialTrajectoryGenerator::generate_jerk_minimized_trajectory(VectorXd start, VectorXd end, double T) {
 
   /*
    Calculate the Jerk Minimizing Trajectory that connects the initial state

@@ -77,7 +77,7 @@ void testJMT() {
   bool total_correct = true;
   for (int i = 0; i < tc.size(); i++) {
     class PolynomialTrajectoryGenerator jmt1;
-    VectorXd generated_jmt = jmt1.generate_jmt(Utils::vectorToVectorXd(tc[i].start), Utils::vectorToVectorXd(tc[i].end), tc[i].T);
+    VectorXd generated_jmt = jmt1.generate_jerk_minimized_trajectory(Utils::vectorToVectorXd(tc[i].start), Utils::vectorToVectorXd(tc[i].end), tc[i].T);
     bool correct = close_enough(Utils::VectorXdToVector(generated_jmt), answers[i]);
     total_correct &= correct;
 

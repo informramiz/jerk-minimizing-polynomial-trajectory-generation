@@ -5,6 +5,9 @@
  *      Author: ramiz
  */
 
+#ifndef POLYNOMIAL_TRAJECTORY_GENERATOR_H_
+#define POLYNOMIAL_TRAJECTORY_GENERATOR_H_
+
 #include <iostream>
 #include <vector>
 #include "Eigen/Dense"
@@ -14,15 +17,12 @@ using Eigen::MatrixXd;
 
 using namespace std;
 
-#ifndef JMT_H_
-#define JMT_H_
-
-class JMT {
+class PolynomialTrajectoryGenerator {
 public:
-  JMT();
-  virtual ~JMT();
+  PolynomialTrajectoryGenerator();
+  virtual ~PolynomialTrajectoryGenerator();
 
-  VectorXd generate_jmt(VectorXd start, VectorXd end, double T);
+  VectorXd generate_jerk_minimized_trajectory(VectorXd start, VectorXd end, double T);
 };
 
-#endif /* JMT_H_ */
+#endif /* POLYNOMIAL_TRAJECTORY_GENERATOR_H_ */
