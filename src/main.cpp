@@ -218,7 +218,13 @@ void test_cases() {
   cout << "Total cost: " << total_cost << endl;
   assert((total_cost - 146.24) < 0.0001);
   
-  
+  PolynomialTrajectoryGenerator ptg;
+
+  VectorXd perturbed_s(3);
+  VectorXd perturbed_d(3);
+  ptg.perturb_goal(state1.head(3), state1.tail(3), perturbed_s, perturbed_d);
+  cout << "Perturbed s: " << endl << perturbed_s << endl;
+  cout << "Perturbed d: " << endl << perturbed_d << endl;
 }
 
 int main() {
