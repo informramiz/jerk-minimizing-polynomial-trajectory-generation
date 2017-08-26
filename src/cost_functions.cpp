@@ -308,7 +308,8 @@ double CostFunctions::total_acceleration_cost(const Trajectory &trajectory,
 
     //calculate acceleration at time step t
     double a = abs(Utils::solve_polynomial(s_dot_dot_coeffs, t));
-    //TODO: What does (a * dt) means here?
+    //TODO: What does (a * dt) means here? I think its converting
+    //acceleration into velocity so that later acceleration can be calculated
     a = a * dt;
 
     total_a += a;
@@ -317,8 +318,8 @@ double CostFunctions::total_acceleration_cost(const Trajectory &trajectory,
   //calculate acceleration per second
   double acceleration_in_one_second = total_a / T;
 
-  if (acceleration_in_one_second > Constants::EXPECTED_ACCELERATION_IN_ONE_SEC) {
-    return 1.0;
+  return Utils::logistic(acceleration_in_one_second / Constants::EXPECTED_ACCELERATION_IN_ONE_SEC);
+}
   }
 
   return 0.0;
